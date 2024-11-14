@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1" />
+    <title>View Product Item List</title>
+    <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+</head>
+
+<body>
+<div class="container">
+    <h1 class="p-3">Product Item List</h1>
+
+    <form th:action="@{/}" method="post">
+        <table class="table table-bordered">
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Date</th>
+
+                <th>Price</th>
+
+                <th>Status</th>
+                <th>Mark Sold</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+
+            <tr th:each="product : ${list}">
+                <td th:text="${product.id}">Id</td>
+                <td th:text="${product.title}">Title</td>
+                <td th:text="${product.date}">Date</td>
+                <td th:text="${product.price}">Price</td>
+                <td th:text="${product.status}">Status</td>
+
+                <td>
+                    <button type="button" class="btn btn-success"
+                            th:onclick="'window.location.href=\'/updateProductStatus/' + ${product.id} + '\' '">
+                        Mark Complete
+                    </button>
+                </td>
+
+                <td>
+                    <button type="button" class="btn btn-primary"
+                            th:onclick="'window.location.href=\'/editProductItem/' + ${product.id} + '\' '">
+                        Edit
+                    </button>
+                </td>
+
+                <td>
+                    <button type="button" class="btn btn-danger"
+                            th:onclick="'window.location.href=\'/deleteProductItem/' + ${product.id} + '\' '">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </form>
+
+    <button type="button" class="btn btn-primary btn-block"
+            th:onclick="'window.location.href=\'/addProductItem\' '">
+        Add New Product Item
+    </button>
+</div>
+
+<script th:inline="javascript">
+    window.onload = function () {
+        var msg = /*[[${message}]]*/ "";
+
+        if (msg == "Save Success") {
+            toastr.success("Item added successfully!!");
+        } else if (msg == "Delete Success") {
+            toastr.success("Item deleted successfully!!");
+        } else if (msg == "Delete Failure") {
+            toastr.error("Some error occurred, couldn't delete item");
+        } else if (msg == "Edit Success") {
+            toastr.success("Item updated successfully!!");
+        }
+
+        toastr.options = {
+            closeButton: true,
+            debug: false,
+            newestOnTop: false,
+            progressBar: true,
+            positionClass: "toast-top-right",
+            preventDuplicates: false,
+            showDuration: "300",
+            hideDuration: "1000",
+            timeOut: "5000",
+            extendedTimeOut: "1000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut",
+        };
+    };
+</script>
+</body>
+</html>
